@@ -1,16 +1,6 @@
-# This is a sample Python script.
+from config import PRODUCTS_FILE, PRICES_FILE, COL_ID, COL_NAME, COL_URL, COL_DESCRIPTION,COL_TARGET_PRICE, COL_PRODUCT_ID, COL_TIME, COL_PRICE,COL_URL,COL_DESCRIPTION, COL_TARGET_PRICE, COL_PRODUCT_ID, COL_TIME
+from storage import init_files
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+init_files()
+print("It's working so far!")
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
