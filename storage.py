@@ -1,6 +1,6 @@
 import csv
 import os.path
-from config import PRODUCTS_FILE, PRICES_FILE, COL_ID, COL_NAME,COL_URL, COL_DESCRIPTION, COL_TARGET_PRICE, COL_PRODUCT_ID, COL_TIME,COL_URL, COL_DESCRIPTION, COL_TARGET_PRICE, COL_PRODUCT_ID, COL_PRICE, COL_TIME
+from config import PRODUCTS_FILE, PRICES_FILE, COL_ID, COL_NAME,COL_PRODUCT_URL, COL_DESCRIPTION, COL_TARGET_PRICE, COL_PRODUCT_ID, COL_PRICE, COL_TIME
 
 
 #to create files if they don't exist yet
@@ -11,7 +11,7 @@ def init_files():
         try:
             with open(PRODUCTS_FILE, "w", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow([COL_ID, COL_NAME, COL_URL, COL_DESCRIPTION, COL_TARGET_PRICE])
+                writer.writerow([COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION, COL_TARGET_PRICE])
                 f.close()
         except IOError:
             print("Something went wrong when creating products file")
@@ -55,7 +55,7 @@ def save_products(products):
 #this function adds a new product to products list variable in the main file, which was loaded from the products file
 def add_product(products, id, name, url, description, target_price):
     new_id=max((p[COL_ID] for p in products),default=0)+1
-    products.append ({COL_ID: id, COL_NAME: name, COL_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
+    products.append ({COL_ID: id, COL_NAME: name, COL_PRODUCT_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
 
 def remove_product(products,product_id): #— usuń z listy i zapisz
     products=[p for p in products if p[COL_ID] != product_id] #using list comprehension to create a new products list without the product to be removed

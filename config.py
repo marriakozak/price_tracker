@@ -5,7 +5,7 @@ PRICES_FILE = "prices.csv"
 #defining variables with column names for file with product list
 COL_ID = "id"
 COL_NAME = "name"
-COL_URL = "url"
+COL_PRODUCT_URL = "url"
 COL_DESCRIPTION= "description"
 COL_TARGET_PRICE= "target price"
 
