@@ -3,6 +3,7 @@ from enum import nonmember
 import requests
 from bs4 import BeautifulSoup
 from config import HEADERS
+from urllib.parse import quote
 #import mechanicalsoup
 import time
 
@@ -15,6 +16,10 @@ browser.session.headers.update({
 }) #to hide that this is a bot
 '''
 def build_search_url(shop_url, product_name):
+    #if shop_url == "https://sportofino.com":
+
+        #shop_url = shop_url.rstrip('/') + "/catalogsearch/result/?q=" + quote(product_name)
+
     shop_url = shop_url+"/search.php?text="+product_name.replace(" ", "+")
     return shop_url
 
@@ -27,7 +32,7 @@ def fetch_html(url):
             return response.text
         else:
             print(f"Website response error: {response.status_code}")
-            return Noneone
+            return None
     except requests.RequestException as e:
         print(f"Connection error: {e}")
         return None
@@ -38,8 +43,18 @@ def find_product_url(html, product_name):
 
     soup = BeautifulSoup(html, "html.parser")
     product_elements = soup.select("a")
+    #name_lower = product_name.lower()
     for element in product_elements:
-        #print(repr(element.get_text()))
+        '''
+        candidates = [
+            element.get_text().strip().lower(),
+            (element.get("title") or "").lower(),
+            (element.get("alt") or "").lower(),
+        ]
+        if any(name_lower in c for c in candidates if c):
+            return element.get("href")'''
+        text = element.get_text().strip().lower()
+        #print(repr(text))
         if product_name.lower() in element.get_text().strip().lower():
             return element.get("href")
     print("Product not found")
