@@ -61,8 +61,6 @@ def find_product_url(html, product_name):
     return None
 
 
-print(fetch_html(url))
-
 def extract_price(html):
     if html==None:
         return None
