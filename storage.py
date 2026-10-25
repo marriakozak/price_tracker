@@ -10,18 +10,17 @@ def init_files():
         os.makedirs("data")
     if not os.path.exists(PRODUCTS_FILE): # to create a file with list of products
         try:
-            with open(PRODUCTS_FILE, "w", newline="") as f:
-                writer = csv.DictWriter(f)
-                writer.writerow([COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION, COL_TARGET_PRICE])
+            with open(PRODUCTS_FILE, "w", encoding="utf-8", newline="") as f:
+                writer = csv.DictWriter(f, [COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION, COL_TARGET_PRICE])
         except IOError:
             print("Something went wrong when creating products file")
-        if not os.path.exists(PRICES_FILE):  # to create a file with prices
-            try:
-                with open(PRICES_FILE, "w", newline="") as fi:
-                    writer = csv.DictWriter(fi)
-                    writer.writerow([COL_PRODUCT_ID, COL_PRICE, COL_TIME])
-            except IOError:
-                print("Something went wrong when creating prices file")
+    if not os.path.exists(PRICES_FILE):  # to create a file with prices
+        try:
+            with open(PRICES_FILE, "w", encoding="utf-8", newline="") as fi:
+                writer = csv.DictWriter(fi, [COL_PRODUCT_ID, COL_PRICE, COL_TIME])
+                writer.writeheader()
+        except IOError:
+            print("Something went wrong when creating prices file")
 
         # wczytaj listę słowników z CSV (uwaga: obsłuż przypadek, gdy plik nie istnieje)
 

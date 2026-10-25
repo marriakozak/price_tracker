@@ -53,7 +53,7 @@ while True:
         product_description=input("Provide product description: ") #asking user for product description
         product_target_price=float(input("Provide product target price: ")) #asking user for target price and converting it to float
         #product_price=scraper.extract_price(scraper.fetch_html())
-        storage.add_product(products,max_id+1,product_url,product_name,product_description, product_target_price) #adding new product to products list
+        storage.add_product(products,max_id+1,product_name,product_url,product_description, product_target_price) #adding new product to products list
     elif selected_option == 3: #removing product from the list
         #products = storage.load_products()  # to load all products from the file
         product_to_remove=input("Provide name of the product to be removed: ")
