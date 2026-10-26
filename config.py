@@ -1,4 +1,4 @@
-#defining varianles with file names
+#defining variables with file names
 PRODUCTS_FILE = "products.csv"
 PRICES_FILE = "prices.csv"
 
@@ -30,3 +30,6 @@ HEADERS = {
     "Connection": "keep-alive",
     "Referer": "https://sportofino.com/",
 }
+
+# default value for scheduling frequency if none selected by user
+DEFAULT_CHECK_INTERVAL_MINUTES=30

@@ -12,6 +12,7 @@ def init_files():
         try:
             with open(PRODUCTS_FILE, "w", encoding="utf-8", newline="") as f:
                 writer = csv.DictWriter(f, [COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION, COL_TARGET_PRICE])
+                writer.writeheader()
         except IOError:
             print("Something went wrong when creating products file")
     if not os.path.exists(PRICES_FILE):  # to create a file with prices
@@ -26,16 +27,19 @@ def init_files():
 
 def load_products():
     try:
-        with open(PRODUCTS_FILE, 'r') as f:
+        with open(PRODUCTS_FILE, "r",encoding="utf-8") as f:
             reader=csv.DictReader(f)
             products=list(reader)
             return products
     except FileNotFoundError:
         print("File does not exist") # runs if the file doesn't exist
+        return []
     except PermissionError:
         print("No permission to open file")  # access denied
+        return []
     except IOError:
         print("Something went wrong")  # general file error
+        return []
 
 def save_products(products):
     try:
@@ -51,18 +55,18 @@ def save_products(products):
         print("Something went wrong")  # general file error
 
 #this function adds a new product to products list variable in the main file, which was loaded from the products file
-def add_product(products, id, name, url, description, target_price):
-    new_id=max((p[COL_ID] for p in products),default=0)+1
-    products.append ({COL_ID: id, COL_NAME: name, COL_PRODUCT_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
+def add_product(products, name, url, description, target_price):
+    new_id=max((int(p[COL_ID]) for p in products),default=0)+1
+    products.append ({COL_ID: new_id, COL_NAME: name, COL_PRODUCT_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
 
 def remove_product(products,product_id): #— usuń z listy i zapisz
-    products=[p for p in products if p[COL_ID] != product_id] #using list comprehension to create a new products list without the product to be removed
+    products=[p for p in products if int(p[COL_ID]) != int(product_id)] #using list comprehension to create a new products list without the product to be removed
     return products
 
 def get_product_id_by_name(products, name):
     for p in products:
         if p[COL_NAME] == name:
-            return p[COL_ID]
+            return int(p[COL_ID])
 
 def get_product_by_id(product_id):
     for p in products:
@@ -75,7 +79,7 @@ def add_price_record(product_id, price):
     try:
         with open(PRICES_FILE, 'a',encoding='utf-8',newline="") as f:
             writer = csv.DictWriter(f,[COL_PRODUCT_ID, COL_PRICE, COL_TIME])
-            writer.writerow([product_id, price,date_str])
+            writer.writerow({COL_PRODUCT_ID: product_id, COL_PRICE: price,COL_TIME: date_str})
     except OSError as e:
         print(f"Error while writing to the file: {e}")
 

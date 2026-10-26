@@ -1,9 +1,8 @@
-from socket import EAGAIN
-from soupsieve.css_types import Null
-from config import PRODUCTS_FILE, PRICES_FILE, COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION,COL_TARGET_PRICE, COL_PRODUCT_ID, COL_PRICE, COL_TIME
+from config import DEFAULT_CHECK_INTERVAL_MINUTES, PRODUCTS_FILE, PRICES_FILE, COL_ID, COL_NAME, COL_PRODUCT_URL, COL_DESCRIPTION,COL_TARGET_PRICE, COL_PRODUCT_ID, COL_PRICE, COL_TIME
 #from storage import init_files, add_price_record, load_products
 import storage
 import scraper
+import scheduler
 
 storage.init_files()
 '''
@@ -19,15 +18,16 @@ print(price_text)
 
 products = storage.load_products() #to load all products from the file
 print(f"Length of products: {len(products)}")
+interval_minutes = DEFAULT_CHECK_INTERVAL_MINUTES #setting default scheduler interval in case user doesn't provide it. the program doesn't record the latest user provided frequency. this would require saving it e.g. in a file
 # function that will display menu
 
 def display_menu():
     menu_text = (
-        "Hello, I'm your price tracker. Put one of the following numbers to continue: /n "
-        "1 - list the current products /n "# i don't have this option yet unless im fine with the whole dictionary
-        "2 - add product to the list /n "  
-        "3 - remove product from the list /n "
-        "4 - set the frequency of price checker /n "
+        "Hello, I'm your price tracker. Put one of the following numbers to continue: \n "
+        "1 - list the current products \n "# i don't have this option yet unless im fine with the whole dictionary
+        "2 - add product to the list \n "  
+        "3 - remove product from the list \n "
+        "4 - set the frequency of price checker \n "
         "5 - "  # I will see if there will be one function to run statistics or more
         "0 - exit program"
     )
@@ -43,24 +43,25 @@ while True:
         print(products)
     elif selected_option == 2: #to add new product to the list, including checking the product url
         #products = storage.load_products() #to load all products from the file
+        '''
         max_id=0 #finding max product id to identify what should be new id
         for product in products:
-            if product["id"] > max_id:
-                max_id = product["id"]
+            if int(product[COL_ID]) > max_id:
+                max_id = int(product[COL_ID])
+        '''
         product_name=input("Provide product name: ") #asking user for product name
         shop_url=input("Provide shop url: ") #asking user for shop url
         product_url=scraper.find_product_url(scraper.fetch_html(scraper.build_search_url(shop_url, product_name)),product_name) #finding product url
         product_description=input("Provide product description: ") #asking user for product description
         product_target_price=float(input("Provide product target price: ")) #asking user for target price and converting it to float
-        #product_price=scraper.extract_price(scraper.fetch_html())
-        storage.add_product(products,max_id+1,product_name,product_url,product_description, product_target_price) #adding new product to products list
+        storage.add_product(products,product_name,product_url,product_description, product_target_price) #adding new product to products list
     elif selected_option == 3: #removing product from the list
         #products = storage.load_products()  # to load all products from the file
         product_to_remove=input("Provide name of the product to be removed: ")
-        storage.remove_product(storage.get_product_id_by_name(products,product_to_remove))
+        products=storage.remove_product(products,storage.get_product_id_by_name(products,product_to_remove))
         print(f"({product_to_remove} has been removed from the list.)")
     elif selected_option == 4:
-        frequency =input("Provide frequency of price checker: ")
+        interval_minutes =int(input("What should be scheduler interval in minutes?: "))
     elif selected_option ==5:
         print("Stats: ")
     elif selected_option== 0:
@@ -70,3 +71,4 @@ while True:
         print("Incorrect value. Please provide the correct number: ")
 
 
+scheduler.run_scheduler(products, interval_minutes,1)
