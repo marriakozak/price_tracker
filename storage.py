@@ -41,6 +41,26 @@ def load_products():
         print("Something went wrong")  # general file error
         return []
 
+def load_prices(product_id=None):
+    try:
+        with open(PRICES_FILE, "r",encoding="utf-8") as f:
+            reader=csv.DictReader(f)
+            if product_id is not None:
+                prices=[record for record in reader if int(record[COL_PRODUCT_ID]) == int(product_id)]
+            else:
+                prices = list(reader)
+            return prices
+    except FileNotFoundError:
+        print("File does not exist") # runs if the file doesn't exist
+        return []
+    except PermissionError:
+        print("No permission to open file")  # access denied
+        return []
+    except IOError:
+        print("Something went wrong")  # general file error
+        return []
+
+
 def save_products(products):
     try:
         with open(PRODUCTS_FILE, 'w', encoding="utf-8", newline="") as f:
@@ -83,3 +103,6 @@ def add_price_record(product_id, price):
     except OSError as e:
         print(f"Error while writing to the file: {e}")
 
+
+
+print(load_prices(1))
