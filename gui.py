@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import storage
 from config import COL_ID, COL_NAME, COL_PRODUCT_URL, COL_TARGET_PRICE
 
@@ -46,6 +47,18 @@ def main():
 
     # calling the refresh function
     refresh_tree()
+
+    #----------------------button frame----------------------
+    button_frame = tk.Frame(window) #creating frame
+    button_frame.pack(fill="x", pady=5) #frame settings
+
+    #refresh button
+    refresh_button = tk.Button(button_frame, text="Refresh products", command=refresh_tree)
+    refresh_button.pack(side="left", padx=5)
+
+    #close button
+    close_button = tk.Button(button_frame, text="Close window", command=window.destroy)
+    close_button.pack(side="right", padx=5)
 
     window.mainloop()
 
