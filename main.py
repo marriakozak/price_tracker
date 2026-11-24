@@ -3,6 +3,7 @@ from config import DEFAULT_CHECK_INTERVAL_MINUTES, PRODUCTS_FILE, PRICES_FILE, C
 import storage
 import scraper
 import scheduler
+import stats
 
 storage.init_files()
 '''
@@ -28,7 +29,7 @@ def display_menu():
         "2 - add product to the list \n "  
         "3 - remove product from the list \n "
         "4 - set the frequency of price checker \n "
-        "5 - "  # I will see if there will be one function to run statistics or more
+        "5 - run statistics \n "
         "0 - exit program"
     )
     print(menu_text)
@@ -64,6 +65,7 @@ while True:
         interval_minutes =int(input("What should be scheduler interval in minutes?: "))
     elif selected_option ==5:
         print("Stats: ")
+        stats.print_stats()
     elif selected_option== 0:
         storage.save_products(products)
         break

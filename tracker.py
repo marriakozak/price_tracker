@@ -20,3 +20,5 @@ def check_product(product):
 def check_all_products(products):
     for product in products:
         check_product(product)
+
+check_all_products(storage.load_products())

@@ -76,7 +76,8 @@ def save_products(products):
 
 #this function adds a new product to products list variable in the main file, which was loaded from the products file
 def add_product(products, name, url, description, target_price):
-    new_id=max((int(p[COL_ID]) for p in products),default=0)+1
+    prices=load_prices()
+    new_id=max((int(p[COL_PRODUCT_ID]) for p in prices),default=0)+1 #check the max ID based on the prices file where old IDs are not removed
     products.append ({COL_ID: new_id, COL_NAME: name, COL_PRODUCT_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
 
 def remove_product(products,product_id): #— usuń z listy i zapisz
@@ -103,6 +104,9 @@ def add_price_record(product_id, price):
     except OSError as e:
         print(f"Error while writing to the file: {e}")
 
-
-
-print(load_prices(1))
+def get_last_price(product_id):
+    prices=load_prices(product_id)
+    if not prices:
+        return None
+    prices_sorted = sorted(prices, key=lambda r: r[COL_TIME])
+    return float(prices_sorted[-1][COL_PRICE])
