@@ -64,7 +64,6 @@ while True:
     elif selected_option == 4:
         interval_minutes =int(input("What should be scheduler interval in minutes?: "))
     elif selected_option ==5:
-        print("Stats: ")
         stats.print_stats()
     elif selected_option== 0:
         storage.save_products(products)

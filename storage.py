@@ -79,6 +79,8 @@ def add_product(products, name, url, description, target_price):
     prices=load_prices()
     new_id=max((int(p[COL_PRODUCT_ID]) for p in prices),default=0)+1 #check the max ID based on the prices file where old IDs are not removed
     products.append ({COL_ID: new_id, COL_NAME: name, COL_PRODUCT_URL: url, COL_DESCRIPTION: description, COL_TARGET_PRICE: target_price})
+    save_products(products)
+    return products
 
 def remove_product(products,product_id): #— usuń z listy i zapisz
     products=[p for p in products if int(p[COL_ID]) != int(product_id)] #using list comprehension to create a new products list without the product to be removed

@@ -142,5 +142,5 @@ def print_stats():
 #price_drops_last_week()
 #show_prices_below_target()
 #average_price_changes()
-prices_at_lowest()
+#prices_at_lowest()
 
